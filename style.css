@@ -1,0 +1,120 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--red:#E8192C;--red-dark:#B8111F;--red-glow:rgba(232,25,44,0.4);--white:#FFFFFF;--cream:#FFF5F5;--gold:#FFD700;--sky-top:#0A0A1A;--sky-mid:#1A0A2E;--sky-low:#2D1B4E;--horizon:#FF4D1C}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Georgia',serif;background:#000}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:#0A0A1A;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s ease,transform .8s ease}
+#loader.fade-out{opacity:0;transform:scale(1.05);pointer-events:none}
+.loader-logo{font-size:clamp(28px,5vw,48px);font-weight:900;color:var(--white);letter-spacing:-1px;animation:logoPulse 1.5s ease-in-out infinite}
+.loader-logo span{color:var(--red)}
+.loader-ring{width:60px;height:60px;border:3px solid rgba(255,255,255,0.1);border-top:3px solid var(--red);border-radius:50%;margin:24px auto;animation:spin .8s linear infinite}
+.loader-tag{color:rgba(255,255,255,0.5);font-size:13px;letter-spacing:3px;text-transform:uppercase}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes logoPulse{0%,100%{opacity:1}50%{opacity:.7}}
+
+/* MAIN SCENE */
+.scene{position:relative;width:100vw;height:100vh;overflow:hidden}
+.sky{position:absolute;inset:0;background:linear-gradient(to bottom,#060612 0%,#0D0824 15%,#1C0F3A 30%,#2E1855 45%,#5C2D4A 60%,#A03830 75%,#E85A1A 88%,#F5832A 95%,#FFB347 100%)}
+.stars{position:absolute;width:100%;height:60%;top:0}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle var(--dur,3s) ease-in-out infinite;animation-delay:var(--delay,0s)}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
+.moon{position:absolute;top:8%;right:12%;width:clamp(50px,7vw,90px);height:clamp(50px,7vw,90px);border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF9E0,#FFE066 40%,#E8A800 100%);box-shadow:0 0 30px 10px rgba(255,220,80,0.3),0 0 80px 30px rgba(255,200,50,0.1);animation:moonGlow 4s ease-in-out infinite}
+@keyframes moonGlow{0%,100%{box-shadow:0 0 30px 10px rgba(255,220,80,0.3),0 0 80px 30px rgba(255,200,50,0.1)}50%{box-shadow:0 0 50px 20px rgba(255,220,80,0.5),0 0 120px 50px rgba(255,200,50,0.15)}}
+.cloud-layer{position:absolute;width:300%;top:12%}
+.city-layer{position:absolute;bottom:130px;width:400%;will-change:transform}
+.city-far{bottom:135px;animation:cityMove 60s linear infinite;filter:blur(2px);opacity:.5}
+.city-mid{bottom:133px;animation:cityMove 30s linear infinite;opacity:.7}
+@keyframes cityMove{0%{transform:translateX(0)}100%{transform:translateX(-25%)}}
+
+/* ROAD - SLOWED DOWN */
+.road-container{position:absolute;bottom:0;width:100%;height:130px;overflow:hidden}
+.road-surface{position:absolute;bottom:0;width:100%;height:100%;background:linear-gradient(to bottom,#1A1A1A 0%,#2A2A2A 50%,#1E1E1E 100%)}
+.road-markings{position:absolute;bottom:0;width:500%;height:100%;animation:roadScroll 1.2s linear infinite} /* was 0.6s, now 1.2s = slower */
+.road-line{position:absolute;top:50%;height:4px;background:rgba(255,255,255,0.7);border-radius:2px;transform:translateY(-50%)}
+.road-edge-top{position:absolute;top:0;width:100%;height:4px;background:linear-gradient(90deg,#FFD700,#FF6600,#FFD700);opacity:.8}
+.road-edge-bot{position:absolute;bottom:0;width:100%;height:3px;background:rgba(255,255,255,0.15)}
+.road-glow{position:absolute;top:-30px;width:100%;height:60px;background:linear-gradient(to top,rgba(255,100,0,0.08),transparent);pointer-events:none}
+@keyframes roadScroll{0%{transform:translateX(0)}100%{transform:translateX(-20%)}}
+
+/* LIGHTS */
+.lights-layer{position:absolute;bottom:128px;width:400%;animation:cityMove 12s linear infinite}
+
+/* ROUTE */
+.route-line{position:absolute;bottom:192px;left:0;width:100%;height:3px;background:linear-gradient(90deg,transparent 0%,rgba(232,25,44,0.3) 20%,rgba(232,25,44,0.8) 50%,rgba(232,25,44,0.3) 80%,transparent 100%);filter:blur(1px);animation:routeGlow 2s ease-in-out infinite;z-index:9}
+.route-dots{position:absolute;bottom:190px;width:300%;height:7px;animation:routeDotsMove 1.2s linear infinite;z-index:9}
+@keyframes routeGlow{0%,100%{opacity:.5;filter:blur(1px)}50%{opacity:1;filter:blur(0px) drop-shadow(0 0 8px rgba(232,25,44,0.9))}}
+@keyframes routeDotsMove{0%{transform:translateX(0)}100%{transform:translateX(-33.33%)}}
+
+/* DELIVERY IMAGE - SLIDES LEFT TO RIGHT + LOWER */
+.delivery-wrapper{
+  position:absolute;
+  bottom:115px; /* moved down a bit from 128px */
+  left:-300px; /* start off screen */
+  z-index:20;
+  animation:riderSlide 10s linear infinite;
+  will-change:left;
+}
+@keyframes riderSlide{
+  0%{left:-300px}
+  100%{left:calc(100% + 300px)}
+}
+.delivery-img{
+  width:clamp(180px,22vw,280px);
+  display:block;
+  image-rendering:-webkit-optimize-contrast;
+  filter:drop-shadow(0 15px 25px rgba(0,0,0,0.6)) drop-shadow(0 0 20px rgba(232,25,44,0.2));
+  animation:riderBounce 0.35s ease-in-out infinite;
+}
+@keyframes riderBounce{
+  0%,100%{transform:translateY(0) rotate(-0.5deg)}
+  50%{transform:translateY(-5px) rotate(0.5deg)}
+}
+.delivery-shadow{
+  position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
+  width:60%;height:12px;background:radial-gradient(ellipse,rgba(0,0,0,0.5) 0%,transparent 70%);
+  border-radius:50%;animation:shadowPulse .35s ease-in-out infinite
+}
+@keyframes shadowPulse{0%,100%{transform:translateX(-50%) scaleX(1);opacity:.5}50%{transform:translateX(-50%) scaleX(0.85);opacity:.3}}
+
+/* FOOD ITEMS */
+.foods-layer{position:absolute;inset:0;pointer-events:none;z-index:15}
+.food-item{position:absolute;font-size:clamp(30px,4vw,50px);filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));animation:foodFloat var(--ft,5s) ease-in-out infinite;animation-delay:var(--fd,0s);will-change:transform}
+.food-label{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;font-family:Arial,sans-serif;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.8);text-transform:uppercase;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,0.8)}
+@keyframes foodFloat{0%,100%{transform:translateY(0) rotate(var(--ri,-3deg))}33%{transform:translateY(-20px) rotate(var(--ro,3deg))}66%{transform:translateY(-10px) rotate(var(--rm,0deg))}}
+
+/* PARTICLES */
+.particles{position:absolute;inset:0;pointer-events:none;z-index:18;overflow:hidden}
+.particle{position:absolute;border-radius:50%;opacity:0;animation:particleFly var(--pd,3s) ease-out infinite;animation-delay:var(--pde,0s)}
+@keyframes particleFly{0%{transform:translate(0,0) scale(1);opacity:.8}100%{transform:translate(var(--px,-40px),var(--py,-60px)) scale(0);opacity:0}}
+.light-streak{position:absolute;height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,0.6),transparent);border-radius:1px;opacity:0;animation:streakFly var(--sd,2s) linear infinite;animation-delay:var(--sde,0s)}
+@keyframes streakFly{0%{transform:translateX(0);opacity:0}10%{opacity:.6}90%{opacity:.2}100%{transform:translateX(-200px);opacity:0}}
+
+/* END SCREEN */
+.end-screen{position:absolute;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;animation:endScreenReveal 12s linear infinite}
+.end-bg{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(30,5,10,0.97) 0%,rgba(10,0,5,0.99) 100%);backdrop-filter:blur(2px)}
+.end-content{position:relative;z-index:2;text-align:center;padding:40px}
+.end-logo-ring{width:clamp(80px,12vw,140px);height:clamp(80px,12vw,140px);border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;position:relative;animation:logoReveal .6s cubic-bezier(0.175,0.885,0.32,1.275) both;animation-delay:.2s;box-shadow:0 0 0 4px rgba(232,25,44,0.3),0 0 40px rgba(232,25,44,0.6),0 0 80px rgba(232,25,44,0.3)}
+.end-logo-ring::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(232,25,44,0.4);animation:ringPulse 1.5s ease-in-out infinite}
+.end-logo-ring::after{content:'';position:absolute;inset:-20px;border-radius:50%;border:1px solid rgba(232,25,44,0.2);animation:ringPulse 1.5s ease-in-out infinite .4s}
+.end-logo-emoji{font-size:clamp(30px,5vw,50px);display:block;margin-bottom:2px}
+.end-brand{font-size:clamp(32px,6vw,72px);font-weight:900;color:var(--white);letter-spacing:-2px;line-height:1;animation:slideUp .6s cubic-bezier(0.175,0.885,0.32,1.275) both;animation-delay:.4s;text-shadow:0 0 60px rgba(232,25,44,0.4)}
+.end-brand span{color:var(--red)}
+.end-domain{font-size:clamp(14px,2vw,22px);color:rgba(255,255,255,0.5);letter-spacing:2px;margin-top:4px;animation:slideUp .6s cubic-bezier(0.175,0.885,0.32,1.275) both;animation-delay:.5s}
+.end-tagline{margin-top:20px;font-size:clamp(14px,2.5vw,26px);color:rgba(255,255,255,0.85);letter-spacing:1px;font-style:italic;animation:slideUp .6s cubic-bezier(0.175,0.885,0.32,1.275) both;animation-delay:.6s}
+.end-tagline strong{color:var(--red);font-style:normal;font-weight:900}
+.end-divider{width:60px;height:3px;background:var(--red);margin:20px auto;border-radius:2px;animation:dividerReveal .4s ease both;animation-delay:.7s;box-shadow:0 0 20px rgba(232,25,44,0.8)}
+.end-badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;animation:slideUp .6s ease both;animation-delay:.8s}
+.end-badge{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:6px 16px;font-size:clamp(10px,1.5vw,13px);color:rgba(255,255,255,0.7);letter-spacing:1px;text-transform:uppercase}
+@keyframes endScreenReveal{0%,75%{opacity:0;pointer-events:none}88%,100%{opacity:1;pointer-events:all}}
+@keyframes logoReveal{from{transform:scale(0) rotate(-180deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.5}}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes dividerReveal{from{width:0}to{width:60px}}
+
+/* AMBIENT EFFECTS */
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.5) 100%);z-index:5;pointer-events:none}
+.horizon-glow{position:absolute;bottom:125px;width:100%;height:80px;background:linear-gradient(to top,rgba(255,80,20,0.15) 0%,rgba(255,120,0,0.08) 50%,transparent 100%);z-index:4;pointer-events:none;animation:horizonPulse 3s ease-in-out infinite}
+@keyframes horizonPulse{0%,100%{opacity:.8}50%{opacity:1}}
+
+/* RESPONSIVE */
+@media (max-width:768px){.city-far,.city-mid{display:none}.food-item{font-size:28px}}
