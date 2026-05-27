@@ -457,7 +457,7 @@ body {
 }
 
 .end-brand span {
-  color: var(--red)
+  color:rgb(255, 145, 0);
 }
 
 .end-domain {
